@@ -1,26 +1,43 @@
-# IWEX CRM
-This is CRM system for recruiting agency.
-s is a Customer Relationship Management System designed for Warehouses. To get started just clone this repo and keep the following steps.</p>
+# Mobile backend headhunter
 
-<b>Development Version</b>
+Этот проект представляет собой веб-приложение на основе Django 4.1, разделенное на два основных приложения:
 
-<ol>
-  <li>Copy .env-example and paste environment variables in .env file with your values</li>
-  <li>Change direction to the folder with <b>docker-compose.yml</b> file</li>
-  <li>Run the command: <b>docker-compose up -d --build</b></li>
-  <li>Run the command: <b>docker-compose exec app python3.6 manage.py migrate</b></li>
-  <li>Create a superuser account with the command: <b>docker-compose exec app python3.6 manage.py createsuperuser</b></li>
-  <li>Browse to one of the following links:       http://127.0.0.1:8000       http://localhost:8000</li>
-</ol>
+- **accounts:** Приложение для управления пользователями, аутентификации и авторизации.
+- **blog:** Приложение для создания и отображения Вакансии
 
-<b>Production Version</b>
 
-<ol>
-  <li>First of all, go to the <b>settings.py</b> file and change DEBUG option to False   DEBUG = False</li>
-  <li>Then change direction to the folder with <b>docker-compose.yml</b> file</li>
-  <li>Run the command: <b>docker-compose -f production.yml up -d --build</b></li>
-  <li>Create a superuser account with the command: <b>docker-compose -f production.yml exec app python3.6 manage.py createsuperuser</b>. 
-  But be careful. If you see message about unapplied migrations, type <b>Ctrl+C</b> to exit from operation. Wait till project applied migrations automatically. After 15-20 seconds try to run the command again, and if there won't be any messages or warnings, create superuser account.</li>
-  <li>Browse to one of the following links:       http://127.0.0.1       http://localhost</li>
-</ol>
+### Основные функции
+
+- Создание и публикация рецептов.
+- Авторизация пользователей и управление профилями.
+- Отображение списка и деталей рецептов.
+
+## Запуск проекта
+
+Чтобы запустить проект локально, выполните следующие шаги:
+
+1. Установите необходимые зависимости:
+   ```bash
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py runserver
+
+2. После выполнения этих шагов вы сможете открыть приложение в вашем браузере по адресу 
+    http://127.0.0.1:8000/.
+
+![Главный сайт пример](media/work1.png)
+
+
+## После выполнения этих шагов вы сможете открыть приложение в вашем браузере по адресу http://127.0.0.1:8000/.
+
+
+## Запуск проекта с использованием Docker
+
+1. Для запуска проекта с использованием Docker, убедитесь, что у вас установлен Docker и Docker Compose. Затем выполните следующие шаги:
+    docker-compose run web python manage.py migrate
+
+2. Запустите контейнеры Docker:
+    docker-compose up --build
+
+## Приложение будет доступно по адресу http://127.0.0.1:8000/.
 

@@ -1,29 +1,42 @@
-# rollup-starter-app
+# Mobile HeadHunter
 
-This repo contains a bare-bones example of how to create an application using Rollup, including importing a module from `node_modules` and converting it from CommonJS.
+Этот проект представляет собой веб-приложение на основе Django 3.2, разделенное на два основных приложения:
+
+- **accounts:** Приложение для управления пользователями, аутентификации и авторизации.
+- **blog:** Приложение для создания и отображения статей блога.
+
+### Основные функции
+
+- Создание и вакансии рецептов.
+- Авторизация пользователей и управление профилями.
+- Отображение списка и деталей вакансии.
+
+## Запуск проекта
+
+Чтобы запустить проект локально, выполните следующие шаги:
+
+1. Установите необходимые зависимости:
+   ```bash
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py runserver
+
+2. После выполнения этих шагов вы сможете открыть приложение в вашем браузере по адресу 
+    http://127.0.0.1:8000/.
+
+![Главный сайт пример](media/work1.png)
 
 
+## После выполнения этих шагов вы сможете открыть приложение в вашем браузере по адресу http://127.0.0.1:8000/.
 
-## Getting started
 
-Clone this repository and install its dependencies:
+## Запуск проекта с использованием Docker
 
-```bash
-git clone https://github.com/rollup/rollup-starter-app
-cd rollup-starter-app
-npm install
-```
+1. Для запуска проекта с использованием Docker, убедитесь, что у вас установлен Docker и Docker Compose. Затем выполните следующие шаги:
+    docker-compose run web python manage.py migrate
 
-The `public/index.html` file contains a `<script src='bundle.js'>` tag, which means we need to create `public/bundle.js`. The `rollup.config.js` file tells Rollup how to create this bundle, starting with `src/main.js` and including all its dependencies, including [date-fns](https://date-fns.org).
+2. Запустите контейнеры Docker:
+    docker-compose up --build
 
-`npm run build` builds the application to `public/bundle.js`, along with a sourcemap file for debugging.
+## Приложение будет доступно по адресу http://127.0.0.1:8000/.
 
-`npm start` launches a server, using [serve](https://github.com/zeit/serve). Navigate to [localhost:3000](http://localhost:3000).
-
-`npm run watch` will continually rebuild the application as your source files change.
-
-`npm run dev` will run `npm start` and `npm run watch` in parallel.
-
-## License
-
-[MIT](LICENSE).
