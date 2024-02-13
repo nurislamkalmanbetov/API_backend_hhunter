@@ -29,7 +29,7 @@ schema_view = get_schema_view(
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
-    url='https://crm.iwex.kg',
+    # url='https://crm.iwex.kg',
 )
 
 urlpatterns = [
@@ -61,3 +61,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
                    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    

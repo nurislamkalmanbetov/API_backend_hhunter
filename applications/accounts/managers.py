@@ -6,18 +6,17 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email=None, password=None, is_staff=False, is_superuser=False, **extra_fields):
+    def create_user(self, email=None, password=None, is_staff=False, is_superuser=False, is_active=True, **extra_fields):
         if not password:
             raise ValueError('User must have a password.')
 
         if not email:
             raise ValueError('User must have an email.')
 
-        model_data = {'is_staff': is_staff, 'is_superuser': is_superuser}
+        model_data = {'is_staff': is_staff, 'is_superuser': is_superuser, 'is_active': is_active}
 
         if email:
             model_data['email'] = self.normalize_email(email)
-
 
         user = self.create(**model_data, **extra_fields)
         user.set_password(password)  # Здесь пароль захеширован

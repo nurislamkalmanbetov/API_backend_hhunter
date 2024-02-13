@@ -24,17 +24,39 @@ class EmployerCompany(models.Model):
 
 
 class City(models.Model):
-    name = models.CharField(max_length=100)
+    LAND_NAME_CHOICES = (
+        ('Baden-Württemberg', 'Baden-Württemberg'),
+        ('Bavaria', 'Bavaria'),
+        ('Berlin', 'Berlin'),
+        ('Brandenburg', 'Brandenburg'),
+        ('Bremen', 'Bremen'),
+        ('Hamburg', 'Hamburg'),
+        ('Hesse', 'Hesse'),
+        ('Lower Saxony', 'Lower Saxony'),
+        ('Mecklenburg-Vorpommern', 'Mecklenburg-Vorpommern'),
+        ('North Rhine-Westphalia', 'North Rhine-Westphalia'),
+        ('Rhineland-Palatinate', 'Rhineland-Palatinate'),
+        ('Saarland', 'Saarland'),
+        ('Saxony', 'Saxony'),
+        ('Saxony-Anhalt', 'Saxony-Anhalt'),
+        ('Schleswig-Holstein', 'Schleswig-Holstein'),
+        ('Thuringia', 'Thuringia'),
+    )
+    
+    land_name = models.CharField(max_length=100, choices=LAND_NAME_CHOICES)
 
     def __str__(self):
-        return self.name
+        return self.land_name
     
     class Meta:
-        verbose_name = _('Город')
-        verbose_name_plural = _('Города')
+        verbose_name = _('Федеральная земля Германии')
+        verbose_name_plural = _('Федеральные земли Германии')
+
+
 
 class Branch(models.Model):
-    city = models.ForeignKey(City, on_delete=models.SET_NULL,null=True, verbose_name=_('Город'))
+    branch_land_name = models.ForeignKey(City, on_delete=models.SET_NULL,null=True, verbose_name=_('Федеральная земля в Германии'))
+    city_name = models.CharField(_('Город'), max_length=100, blank=True)
     company = models.ForeignKey(EmployerCompany, on_delete=models.CASCADE, verbose_name=_('Компания'))
     name = models.CharField(_('Название филлиала'), max_length=255)
     address = models.CharField(_('Текстовый адрес'), max_length=255, blank=True, default='')

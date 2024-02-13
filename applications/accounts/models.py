@@ -430,4 +430,42 @@ def is_staff_or_superuser(user_id):
     user = User.objects.get(pk=user_id)
     if not user.is_staff and not user.is_superuser:
         raise ValidationError("Only staff or superuser can be assigned as 'Оплату принял'")
+    
 
+
+# from docx import Document
+# import pdfrw
+
+# class Contract(models.Model):
+#     title = models.CharField(max_length=100)
+#     first_name = models.CharField(max_length=50, verbose_name="Имя")
+#     last_name = models.CharField(max_length=50, verbose_name="Фамилия")
+
+#     def __str__(self):
+#         return self.title
+    
+#     class Meta:
+#         verbose_name = 'Контракт'
+#         verbose_name_plural = 'Контракты'
+
+
+# class Documents(models.Model):
+#     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='document', verbose_name=_('Соискатель'))
+#     study_certificate = models.FileField('Справка с места учебы', upload_to=user_directory_path, blank=True)
+#     study_certificate_embassy = models.FileField('Справка с места учебы для посольства', upload_to=user_directory_path, blank=True)
+#     study_certificate_translate_embassy = models.FileField('Перевод справки с места учебы для посольства', upload_to=user_directory_path, blank=True)
+#     photo_for_schengen = models.FileField('Фото на шенген 3.5x4.5', upload_to=user_directory_path, blank=True, validators=[validate_image_file_extension, ])
+#     zagranpassport_copy = models.FileField('Загранпаспорт', upload_to=user_directory_path, blank=True)
+#     passport_copy = models.FileField('Копия ID', upload_to=user_directory_path, blank=True)
+#     fluorography_express = models.FileField('Флюрография регистрация', upload_to=user_directory_path, blank=True)
+#     fluorography = models.FileField('Флюрография посольство', upload_to=user_directory_path, blank=True)
+#     immatrikulation = models.FileField('Immatrikulation с печатью университета', upload_to=user_directory_path, blank=True)
+#     transcript = models.FileField('Транскрипт оригинал', upload_to=user_directory_path, blank=True)
+#     transcript_translate = models.FileField('Перевод транскрипта', upload_to=user_directory_path, blank=True)
+#     bank_statement = models.FileField('Выписка с банка', upload_to=user_directory_path, blank=True)
+#     conduct_certificate = models.FileField('Справка о несудимости', upload_to=user_directory_path, blank=True)
+#     mentaldispanser_certificate = models.FileField('Справка с психдиспансера', upload_to=user_directory_path, blank=True)
+#     drugdispanser_certificate = models.FileField('Справка с наркодиспансера', upload_to=user_directory_path, blank=True)
+#     parental_permission = models.FileField('Разрешение от родителей', upload_to=user_directory_path, blank=True)
+#     bank_details = models.FileField('Реквизиты банка', upload_to=user_directory_path, blank=True, null=True)
+#     visa_file = models.FileField('Скан визы', upload_to=user_directory_path, blank=True, null=True)

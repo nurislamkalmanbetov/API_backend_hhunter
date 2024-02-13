@@ -1,12 +1,9 @@
 from django.contrib import admin
-from .models import (
-    User, Profile, Rating, WorkExperience,
-    Review, WorkSchedule, University, PassportAndTerm, 
-    Payment, Deal,
-)
+from .models import *
 from import_export.admin import ImportExportModelAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
+
 
 
 @admin.register(User)
@@ -32,6 +29,15 @@ class UserAdmin(ImportExportModelAdmin, BaseUserAdmin):
         model = User
 
 
+def download_csv(modeladmin, request, queryset):
+    import csv
+    f = open('some.csv', 'wb')
+    writer = csv.writer(f)
+    writer.writerow(["code", "country", "ip", "url", "count"])
+    for s in queryset:
+        writer.writerow([s.code, s.country, s.ip, s.url, s.count])
+
+
 
 class UniversityInline(admin.StackedInline):  
     model = University
@@ -43,7 +49,7 @@ class PassportAndTermInline(admin.StackedInline):
     extra = 1
 
 
-class Payment(admin.StackedInline): 
+class PaymentAdmin(admin.StackedInline): 
     model = Payment
     extra = 1
 
@@ -51,6 +57,7 @@ class Payment(admin.StackedInline):
 class Deal(admin.StackedInline):
     model = Deal
     extra = 1
+
 
 @admin.register(Profile)
 class ProfileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
@@ -77,7 +84,12 @@ class ProfileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     inlines = [
         UniversityInline, PassportAndTermInline, 
-        Payment, Deal,]  # Добавляем в профиль инлайн университета
+        PaymentAdmin, Deal,
+        ]  
+    
+    actions = [download_csv]
+
+
 
 
 
@@ -110,6 +122,91 @@ class WorkExperienceAdmin(admin.ModelAdmin):
         ('Worktime', {'fields': ('start_date', 'end_date',)}),
         ('Important dates', {'fields': ('responsibilities', 'country',)}),
     )
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'total_amount', 'debt', 'payment_date', 'payment_accepted',)
+    search_fields = ('user__email',)
+    list_filter = ('payment_accepted', 'payment_date',)
+    fieldsets = (
+        (None, {'fields': ('user',)}),
+        ('Payment Details', {'fields': ('total_amount', 'total_amount_in_words', 'initial_fee', 'initial_fee_in_words', 'average_fee', 'average_fee_in_words', 'final_fee', 'final_fee_in_words', 'debt', 'debt_in_words', 'payment_date',)}),
+        ('Payment Acceptance', {'fields': ('payment_accepted_by', 'payment_accepted_date', 'payment_accepted',)}),
+    )
+
+# from django.http import HttpResponse
+# import os
+# from docx import Document
+# from django.contrib import admin
+# from django.utils.translation import gettext_lazy as _
+# from django.urls import path
+# from django.urls import reverse_lazy
+# import zipfile
+
+# class ContractAdmin(admin.ModelAdmin):
+#     list_display = ('title', 'first_name', 'last_name', 'download_contract',)
+#     search_fields = ('title', 'first_name', 'last_name',)
+
+#     def download_contract(self, obj):
+#         return '<a href="{}">Download Word</a>'.format(reverse_lazy('admin:download_contract', args=[obj.pk]))
+#     download_contract.allow_tags = True
+#     download_contract.short_description = _('Download Word')
+
+#     def get_urls(self):
+#         urls = super().get_urls()
+#         my_urls = [
+#             path('download_contract/<int:pk>/', self.download_contract_view, name='download_contract'),
+#         ]
+#         return my_urls + urls
+
+#     def download_contract_view(self, request, pk):
+#         contract = self.get_object(request, pk=pk)
+#         if contract:
+#             # Создание нового документа Word
+#             document = Document()
+#             # Добавление данных о контракте в документ
+#             document.add_heading('Contract', level=1)
+#             document.add_paragraph(f'Title: {contract.title}')
+#             document.add_paragraph(f'First Name: {contract.first_name}')
+#             document.add_paragraph(f'Last Name: {contract.last_name}')
+#             # Сохранение документа во временном файле
+#             temp_file_path = '/tmp/contract.docx'
+#             document.save(temp_file_path)
+#             # Отправка файла как HTTP-ответ для скачивания
+#             with open(temp_file_path, 'rb') as file:
+#                 response = HttpResponse(file.read(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+#                 response['Content-Disposition'] = f'attachment; filename="{os.path.basename(temp_file_path)}"'
+#                 return response
+#         else:
+#             return HttpResponse(_('Contract not found'), status=404)
+
+#     def download_selected_word(self, request, queryset):
+#         response = HttpResponse(content_type='application/zip')
+#         response['Content-Disposition'] = 'attachment; filename="contracts.zip"'
+
+#         with zipfile.ZipFile(response, 'w') as zip_file:
+#             for contract in queryset:
+#                 # Создание нового документа Word для каждого контракта
+#                 document = Document()
+#                 document.add_heading('Contract', level=1)
+#                 document.add_paragraph(f'Title: {contract.title}')
+#                 document.add_paragraph(f'First Name: {contract.first_name}')
+#                 document.add_paragraph(f'Last Name: {contract.last_name}')
+#                 # Сохранение документа во временном файле
+#                 temp_file_path = f'/tmp/{contract.title}_{contract.first_name}_{contract.last_name}.docx'
+#                 document.save(temp_file_path)
+#                 # Добавление документа в ZIP-архив
+#                 zip_file.write(temp_file_path, os.path.basename(temp_file_path))
+
+#         return response
+#     download_selected_word.short_description = _('Download Selected Word')
+
+# admin.site.register(Contract, ContractAdmin)
+
+
+
+
 
 
 

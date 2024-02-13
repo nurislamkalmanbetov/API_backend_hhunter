@@ -13,8 +13,8 @@ class EmployerCompanyAdmin(admin.ModelAdmin):
         model = EmployerCompany
 
 class BranchAdmin(admin.ModelAdmin):
-    list_display = ['id','city','company','name','address','link_address','description',]
-    search_fields = ['city','company','name','address','link_address','description',]
+    list_display = ['id','branch_land_name', 'city_name', 'company','name','address','link_address','description',]
+    search_fields = ['branch_land_name', 'city_name', 'company','name','address','link_address','description',]
 
     ordering = ('id',)
     class Meta:
@@ -45,12 +45,24 @@ class VacancyAdmin(admin.ModelAdmin):
 
 class InvitationAdmin(admin.ModelAdmin):
     list_display = ['id','employer','vacancy','user', 'is_rejected', 'is_accepted']
-    ordering = ('id',)
+    search_fields = [
+        'employer_company','branch','position',
+        ]
+
     class Meta:
         model = Invitation
 
+    
+class CityAdmin(admin.ModelAdmin):
+    list_display = ['id', 'land_name']
+    search_fields = ['land_name',]
 
-admin.site.register(City)
+    class Meta:
+        model = City
+
+
+
+admin.site.register(City,CityAdmin)
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(ReviewBranch)
 admin.site.register(PositionEmployee, PositionEmployeeAdmin)

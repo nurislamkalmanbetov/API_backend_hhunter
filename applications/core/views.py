@@ -79,11 +79,15 @@ class CityListAPIView(ListAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializers
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name'] 
+    search_fields = ['land_name'] 
 
+
+from rest_framework.parsers import MultiPartParser
 
 class BranchAPIView(APIView):
+    parser_classes = [MultiPartParser]
     permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    
     @swagger_auto_schema(request_body=BranchSerializers)
     def post(self, request, *args, **kwargs):
         serializer = BranchSerializers(data=request.data)
@@ -116,10 +120,12 @@ class BranchUpdateAPIView(APIView):
 class BranchListAPIView(ListAPIView):
     serializer_class = BranchListSerializers
     permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    
     def get_queryset(self):
         user_id = self.request.user.id
-        queryset = Branch.objects.filter(company__user__id=user_id).select_related('city', 'company')
+        queryset = Branch.objects.filter(company__user__id=user_id).select_related('branch_land_name', 'company')
         return queryset
+    
         
 class BranchDetailListAPIView(ListAPIView):
     permission_classes = [IsAuthenticated, IsEmployerPermisson]
@@ -132,7 +138,7 @@ class BranchDetailListAPIView(ListAPIView):
         
         # Используйте filter(id=branch_id) вместо filter(branch=branch)
         branch = get_object_or_404(Branch, id=branch_id)
-        queryset = Branch.objects.filter(id=branch.id).select_related('city', 'company')
+        queryset = Branch.objects.filter(id=branch.id).select_related('branch_land_name', 'company')
         return queryset
 
     

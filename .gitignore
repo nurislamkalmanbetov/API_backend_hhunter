@@ -131,3 +131,7 @@ media/
 static/package-lock.json
 static/.rpt2_cache/
 .vscode/
+.vscode/
+iwex_crm/urls.py
+iwex_crm/settings.py
+migrations/

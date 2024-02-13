@@ -90,54 +90,51 @@ class CitySerializers(serializers.ModelSerializer):
         model = City
         fields = [
             'id',
-            'name',
+            'land_name',
         ]
 
 class BranchSerializers(serializers.ModelSerializer):
-    city = serializers.CharField(source='city.name', required=False, allow_null=True)
-    
 
     class Meta:
         model = Branch
         fields = [
             'id',
-            'city',
+            'branch_land_name',
+            'city_name',
             'name',
             'address',
             'link_address',
             'description',
         ]
-    #если iin 
-    def create(self, validated_data):
-        city = validated_data.pop('city')
-        city = City.objects.get(name=city['name'])
-        branch = Branch.objects.create(city=city, **validated_data)
-        return branch
-    
+
     def update(self, instance, validated_data):
-        city_data = validated_data.pop('city', None)
-        if city_data:
-            city = City.objects.get(name=city_data['name'])
-            instance.city = city
-        else:
-            instance.city = None
+        branch_land_name = validated_data.pop('branch_land_name', None)
+        city_name = validated_data.pop('city_name', None)
+
+        if branch_land_name:
+            instance.branch_land_name = branch_land_name
+        elif city_name:
+            # Assuming city_name is a free text input, not a foreign key
+            instance.city_name = city_name
+
         instance.name = validated_data.get('name', instance.name)
         instance.address = validated_data.get('address', instance.address)
         instance.link_address = validated_data.get('link_address', instance.link_address)
         instance.description = validated_data.get('description', instance.description)
-    
+
         instance.save()
         return instance
     
 
 #серилайзер для гет запроса где только название филиала и город
 class BranchListSerializers(serializers.ModelSerializer):
-    city = serializers.CharField(source='city.name')
+
     class Meta:
         model = Branch
         fields = [
             'id',
-            'city',
+            'branch_land_name',
+            'city_name',
             'name',
         ]
 

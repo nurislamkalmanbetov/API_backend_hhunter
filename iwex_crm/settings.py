@@ -49,13 +49,13 @@ if not DEBUG:
 ALLOWED_HOSTS = ['*']
 
 
+AUTH_USER_MODEL = 'accounts.User'
+
 # Application definition
 
 INSTALLED_APPS = [
     'smart_selects',
     'rangefilter',
-    # 'applications.apps.SuitConfig',
-    # 'applications.apps.JazzminConfig',
 
     'jazzmin',
     'django.contrib.admin',
@@ -64,7 +64,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'schedule',
     'easy_thumbnails',
     'storages',
     'applications.accounts',
@@ -136,11 +135,11 @@ WSGI_APPLICATION = 'iwex_crm.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': env('NAME_DB'),
-       'USER': env('USER_DB'),
-       'PASSWORD':  env('PASSWORD_DB'),
-       'HOST': env('HOST_DB'),
-       'PORT':env('PORT_DB'),
+       'NAME': 'iwex-jobi2',
+       'USER': 'postgres',
+       'PASSWORD':  'qwerty123',
+       'HOST': 'localhost',
+       'PORT': '5432',
    }
 }
 
@@ -242,8 +241,6 @@ default_app_config = 'applications.core.apps.CoreConfig'
 # EMAIL_USE_TLS = True
 # DEFAULT_FROM_EMAIL = 'IWEX'
 
-AUTH_USER_MODEL = env.str('AUTH_USER_MODEL')
-
 
 # Login url for @login_required decorator
 LOGIN_URL = env.str('LOGIN_URL')
@@ -262,7 +259,7 @@ STATICFILES_DIRS = [
 ]
 
 # Настройки для медиа-файлов
-MEDIA_URL = 'https://crm.iwex.kg/media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
