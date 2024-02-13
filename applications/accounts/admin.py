@@ -87,7 +87,7 @@ class ProfileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         PaymentAdmin, Deal,
         ]  
     
-    actions = [download_csv]
+    # actions = [download_csv]
 
 
 

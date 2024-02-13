@@ -71,12 +71,15 @@ const set = gsap.set;
 function getCard(index) {
   return `#card${index}`;
 }
+
 function getCardContent(index) {
   return `#card-content-${index}`;
 }
+
 function getSliderItem(index) {
   return `#slide-item-${index}`;
 }
+
 
 function animate(target, duration, properties) {
   return new Promise((resolve) => {
@@ -90,7 +93,6 @@ function animate(target, duration, properties) {
 
 let order = [0, 1, 2];
 let detailsEven = true;
-
 let offsetTop = 200;
 let offsetLeft = 700;
 let cardWidth = 200;
@@ -240,7 +242,6 @@ function step() {
       ease,
     });
     gsap.set(detailsInactive, { zIndex: 12 });
-
     const [active, ...rest] = order;
     const prv = rest[rest.length - 1];
 
