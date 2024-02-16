@@ -33,6 +33,7 @@ class UserAdmin(ImportExportModelAdmin, BaseUserAdmin):
 
 
 
+
 class UniversityInline(admin.StackedInline):  
     model = University
     extra = 1
@@ -43,21 +44,29 @@ class PassportAndTermInline(admin.StackedInline):
     extra = 1
 
 
-class Payment(admin.StackedInline): 
+class PaymentAdminInline(admin.StackedInline): 
     model = Payment
     extra = 1
 
 
-class Deal(admin.StackedInline):
+class DealInline(admin.StackedInline):
     model = Deal
     extra = 1
+
+
+class WorkExperienceInline(admin.StackedInline):
+    model = WorkExperience
+    extra = 1
+
+
 
 @admin.register(Profile)
 class ProfileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     list_display = (
         'id', 'user', 'first_name', 'last_name', 'nationality_ru',
-        'german', 'english', 'russian',
+        'german', 'german_level',
+        'english', 'english_level',
     )
 
     search_fields = ('user', 'nationality_ru', 'gender_ru', 'english', 'russian', 'german',)
@@ -71,13 +80,18 @@ class ProfileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
             'birth_country_ru', 'birth_country_en', 'birth_country_de',
             'birth_region_ru', 'birth_region_en', 'birth_region_de',
             'date_of_birth', 'phone', 'whatsapp_phone_number',
-            'german', 'english', 'russian',
+            'german', 'german_level',
+            'english', 'english_level', 
+            'russian', 'russian_level', 
+            'turkish', 'turkish_level', 
+            'chinese', 'chinese_level',
         )}),
     )
 
     inlines = [
         UniversityInline, PassportAndTermInline, 
-        Payment, Deal,]  # Добавляем в профиль инлайн университета
+        PaymentAdminInline, DealInline, WorkExperienceInline
+        ]
 
 
 
@@ -97,31 +111,14 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(WorkExperience)
-class WorkExperienceAdmin(admin.ModelAdmin):
-    list_display = ('user', 'type_company', 'company', 'position', 'start_date', 'country',)
-    search_fields = ('user__email', 'company', 'position', 'country',)
-    list_filter = ('type_company', 'position', 'country',)
 
-
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'total_amount', 'debt', 'payment_date', 'payment_accepted',)
+    search_fields = ('user__email',)
+    list_filter = ('payment_accepted', 'payment_date',)
     fieldsets = (
-        (None, {'fields': ('user', )}),
-        ('Details', {'fields': ('company', 'type_company', 'position',)}),
-        ('Worktime', {'fields': ('start_date', 'end_date',)}),
-        ('Important dates', {'fields': ('responsibilities', 'country',)}),
+        (None, {'fields': ('user',)}),
+        ('Payment Details', {'fields': ('total_amount', 'total_amount_in_words', 'initial_fee', 'initial_fee_in_words', 'average_fee', 'average_fee_in_words', 'final_fee', 'final_fee_in_words', 'debt', 'debt_in_words', 'payment_date',)}),
+        ('Payment Acceptance', {'fields': ('payment_accepted_by', 'payment_accepted_date', 'payment_accepted',)}),
     )
-
-
-
-
-# @admin.register(WorkSchedule)
-# class WorkScheduleAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'user',)
-#     search_fields = ('user__email',)
-#     fields = (
-#         'user', 'monday', 'tuesday', 
-#         'wednesday', 'thursday', 'friday', 
-#         'saturday', 'sunday', 
-#         'custom', 
-#         'custom_start_time', 'custom_end_time',
-#         )
