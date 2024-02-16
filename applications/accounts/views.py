@@ -7,7 +7,7 @@ from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import (exceptions, filters, generics, mixins, status, viewsets)
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, ListCreateAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
@@ -251,18 +251,69 @@ class AccessTokenView(ObtainAuthToken):
 class ProfileDetailView(ListAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    parser_classes = [MultiPartParser]
 
     def get_queryset(self):
         profile_id = self.kwargs['id']
         return Profile.objects.filter(id=profile_id)
+
+
+from applications.core.models import Vacancy, Invitation
+from django.shortcuts import get_object_or_404
+from django.db.models import F
+
+
+
+class ProfileFilterListView(ListAPIView):
+    serializer_class = ProfileAllSerializer
+    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+
+    def get_queryset(self):
+        vacancy_id = self.kwargs.get('pk')
+        employer = self.request.user.id
+
+        vacancy = get_object_or_404(Vacancy, id=vacancy_id)
+
+        profiles_for_vacancy = Profile.objects.annotate(
+            vacancy_language_de=F('german'),
+            vacancy_language_en=F('english')
+        ).filter(
+            vacancy_language_de__gte=vacancy.language_german,
+            vacancy_language_en__gte=vacancy.language_english
+        )
+
+        invited_users = Invitation.objects.filter(employer__id=employer, vacancy__id=vacancy_id).values_list('user', flat=True)
+
+        if vacancy.gender != 'Any':
+            # Если пол важен, фильтруем по указанному полу в вакансии
+            profiles_for_vacancy = profiles_for_vacancy.filter(gender_en=vacancy.gender)
+
+        queryset = profiles_for_vacancy.exclude(id__in=invited_users)
+
+        return queryset
     
 
-class ProfileListAllView(ListAPIView):
+
+class ProfileListView(ListAPIView):
     serializer_class = ProfileAllSerializer
-    filter_fields = ['gender_en', 'nationality_en', 'german', 'english',]
-    permission_classes = [IsAuthenticated,IsEmployerPermisson]
+    permission_classes = [IsAuthenticated, IsEmployerPermisson]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_fields = ['gender_en', 'nationality_en', 'german', 'german_level', 'english', 'english_level']
 
     def get_queryset(self):
         return Profile.objects.all()
+    
+    
 
+class WorkexperienceView(ListCreateAPIView):
+    serializer_class = WorkExperienceSerializer
+    filter_fields = ['type_company', ]
+    permission_classes = [IsAuthenticated,IsEmployerPermisson]
+    parser_classes = [MultiPartParser]
+    queryset = WorkExperience.objects.all()
 
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)

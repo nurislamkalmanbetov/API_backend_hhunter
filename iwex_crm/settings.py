@@ -132,28 +132,28 @@ WSGI_APPLICATION = 'iwex_crm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'iwex-jobi2',
-       'USER': 'postgres',
-       'PASSWORD':  'qwerty123',
-       'HOST': 'localhost',
-       'PORT': '5432',
-   }
-}
-
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('POSTGRES_DB'),
-#         'USER': env('POSTGRES_USER'),
-#         'PASSWORD':  env('POSTGRES_PASSWORD'),
-#         'HOST': env('POSTGRES_HOST'),
-#         'PORT': env('POSTGRES_PORT'),
-#     }
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'iwex-jobi2',
+#        'USER': 'postgres',
+#        'PASSWORD':  'qwerty123',
+#        'HOST': 'localhost',
+#        'PORT': '5432',
+#    }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('NAME_DB'),
+        'USER': env('USER_DB'),
+        'PASSWORD':  env('PASSWORD_DB'),
+        'HOST': env('HOST_DB'),
+        'PORT': env('PORT_DB'),
+    }
+}
 
 
 
