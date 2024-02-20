@@ -53,16 +53,16 @@ class InvitationAdmin(admin.ModelAdmin):
         model = Invitation
 
     
-class CityAdmin(admin.ModelAdmin):
+class LandNameAdmin(admin.ModelAdmin):
     list_display = ['id', 'land_name']
     search_fields = ['land_name',]
 
     class Meta:
-        model = City
+        model = LandName
 
 
 
-admin.site.register(City,CityAdmin)
+admin.site.register(LandName,LandNameAdmin)
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(ReviewBranch)
 admin.site.register(PositionEmployee, PositionEmployeeAdmin)

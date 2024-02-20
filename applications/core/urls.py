@@ -16,7 +16,7 @@ urlpatterns = [
     path('branch-list/', BranchListAPIView.as_view(), name='branchlist'),
     path('branch-detail/', BranchDetailListAPIView.as_view(), name='branchlistdetail'),
     
-    path('city/', CityListAPIView.as_view(), name='city'),
+    path('landname/', LandNameListAPIView.as_view(), name='landname'),
     
     path('positionemployee/', PositionEmployeeAPIView.as_view(), name='positionemployee'),
     path('positionemployee-delete/<int:pk>/', PositionEmployeeDeleteAPIView.as_view(), name='positionemployee'),

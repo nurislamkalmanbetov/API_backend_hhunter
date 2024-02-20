@@ -74,10 +74,10 @@ class EmployerCompanyUpdateView(generics.RetrieveUpdateAPIView):
     
     
 
-class CityListAPIView(ListAPIView):
+class LandNameListAPIView(ListAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = City.objects.all()
-    serializer_class = CitySerializers
+    queryset = LandName.objects.all()
+    serializer_class = LandNameSerializers
     filter_backends = [filters.SearchFilter]
     search_fields = ['land_name'] 
 

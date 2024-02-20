@@ -23,7 +23,7 @@ class EmployerCompany(models.Model):
         verbose_name_plural = _('Работодатели')
 
 
-class City(models.Model):
+class LandName(models.Model):
     LAND_NAME_CHOICES = (
         ('Baden-Württemberg', 'Baden-Württemberg'),
         ('Bavaria', 'Bavaria'),
@@ -55,7 +55,7 @@ class City(models.Model):
 
 
 class Branch(models.Model):
-    branch_land_name = models.ForeignKey(City, on_delete=models.SET_NULL,null=True, verbose_name=_('Федеральная земля в Германии'))
+    branch_land_name = models.ForeignKey(LandName, on_delete=models.SET_NULL,null=True, verbose_name=_('Федеральная земля в Германии'))
     city_name = models.CharField(_('Город'), max_length=100, blank=True)
     company = models.ForeignKey(EmployerCompany, on_delete=models.CASCADE, verbose_name=_('Компания'))
     name = models.CharField(_('Название филлиала'), max_length=255)

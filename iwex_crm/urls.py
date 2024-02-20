@@ -42,6 +42,7 @@ urlpatterns = [
     path('core/', include('applications.core.urls')),
     # path('common/', include('applications.common.urls')),
     # path('bot/', include('applications.bot.urls')),
+    path('staff/', include('applications.staff.urls')),
      re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
         schema_view.without_ui(cache_timeout=0),
@@ -53,12 +54,11 @@ urlpatterns = [
           name="schema-swagger-ui",
      ),
      path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # handler404 = error_404_page
 # handler500 = error_500_page
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
-                   static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
+#                    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

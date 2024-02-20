@@ -26,7 +26,6 @@ class EmployerProfileSerializers(serializers.ModelSerializer):
 
 class EmployerCompanySerialzers(serializers.ModelSerializer):
     iin = serializers.CharField(required=False, allow_blank=True)
-
     icon = serializers.ImageField(required=False, use_url=True,allow_null=True)
   
     class Meta:
@@ -84,10 +83,10 @@ class EmployerUpdateSerialzers(serializers.ModelSerializer):
             return instance
 
 
-class CitySerializers(serializers.ModelSerializer):
+class LandNameSerializers(serializers.ModelSerializer):
     
     class Meta:
-        model = City
+        model = LandName
         fields = [
             'id',
             'land_name',
@@ -95,12 +94,14 @@ class CitySerializers(serializers.ModelSerializer):
 
 class BranchSerializers(serializers.ModelSerializer):
 
+
     class Meta:
         model = Branch
         fields = [
             'id',
             'branch_land_name',
             'city_name',
+            'company',
             'name',
             'address',
             'link_address',
@@ -126,7 +127,7 @@ class BranchSerializers(serializers.ModelSerializer):
         return instance
     
 
-#серилайзер для гет запроса где только название филиала и город
+
 class BranchListSerializers(serializers.ModelSerializer):
 
     class Meta:
@@ -140,41 +141,6 @@ class BranchListSerializers(serializers.ModelSerializer):
 
     
 
-# class ReviewBranchSerializers(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = ReviewBranch
-#         fields = [
-#             'id',
-#             'branch',
-#             'user',
-#             'review',
-#             'created_date',
-#         ]
-
-
-# class RatingEmployerCompanySerializers(serializers.ModelSerializer):
-    
-#     class Meta:
-#         model = RatingEmployerCompany
-#         fields = [
-#             'id',
-#             'company',
-#             'user',
-#             'rating',
-#         ]   
-
-
-# class RatingEmployerCompanySerializers(serializers.ModelSerializer):
-        
-#         class Meta:
-#             model = RatingEmployerCompany
-#             fields = [
-#                 'id',
-#                 'company',
-#                 'user',
-#                 'rating',
-#             ]
 
 
 class PositionEmployeeSerializers(serializers.ModelSerializer):
@@ -184,7 +150,6 @@ class PositionEmployeeSerializers(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-
         ]
 
 
