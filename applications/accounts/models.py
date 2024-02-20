@@ -15,12 +15,12 @@ from applications.accounts.managers import *
 class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
         (('is_employer'), _('Работодатель')),
-        (('is_employee'), _('Соискатель')),
+        (('is_student'), _('Соискатель')),
     )
 
     email = models.EmailField(_('Email адрес'), unique=True, db_index=True)
     phone = models.CharField(_('Номер телефона'), max_length=50, blank=True, db_index=True)
-    role = models.CharField(_('Роль'), max_length=50, choices=ROLE_CHOICES)
+    role = models.CharField(_('Роль'), max_length=50, choices=ROLE_CHOICES, blank=True, null=True)
     is_staff = models.BooleanField(_('Сотрудник'), default=False)
     is_superuser = models.BooleanField(_('Суперпользователь'), default=False)
     is_active = models.BooleanField(_('Активен'), default=False)
